@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemLayout"
+        >
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/oil_lamp"
+            android:id="@+id/itemImage"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:padding="10dp"/>
+
+    <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ItemName"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+        <TextView
+                android:text="100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/itemPrice"/>
+
+        <TextView
+                android:text=" ⛃"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/coinsView"
+                android:textColor="@color/Yellow"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:text="куплено"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemBought"
+            android:gravity="center"
+            android:layout_marginTop="-20dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/GreenBright"/>
+
+</LinearLayout>

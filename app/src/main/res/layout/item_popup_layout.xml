@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@color/PopupBg2">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
+
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:srcCompat="@drawable/left_arrow"
+                android:id="@+id/backImageView"
+                android:scaleX="0.8"
+                android:scaleY="0.8"/>
+
+        <TextView
+                android:text="Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/nameView"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingEnd="48dp"
+                android:textSize="20sp"/>
+    </LinearLayout>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/candle"
+            android:id="@+id/imageView"
+            android:adjustViewBounds="true"
+            android:scaleX="0.5"
+            android:scaleY="0.5"/>
+
+    <TextView
+            android:text="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptionView"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="16sp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
+
+        <TextView
+                android:text="123"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/costView"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_marginStart="30dp"/>
+
+        <TextView
+                android:text=" ⛃"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/coinsView2"
+                android:textColor="@color/Yellow"
+                android:layout_weight="1"/>
+
+        <Button
+                android:text="Купить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buyButton"
+                android:layout_weight="1"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/abitDarkGreen"
+                android:layout_marginStart="30dp"/>
+    </LinearLayout>
+</LinearLayout>

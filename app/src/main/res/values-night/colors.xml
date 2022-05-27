@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="LightGreen">#A5D6A7</color>
+    <color name="Yellow">#FBC02D</color>
+    <color name="NotSoLightGreen">#98DA5E</color>
+    <color name="PopupBg1">#DD1976D2</color>
+    <color name="PopupBg2">#EE1976D2</color>
+</resources>

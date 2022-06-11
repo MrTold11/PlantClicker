@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autoclick_value">+%d/сек</string>
+    <string name="lamps">Лампы</string>
+    <string name="fertilizers">Удобрения</string>
+    <string name="candle">Свеча</string>
+    <string name="oil_lamp">Масляная лампа</string>
+    <string name="flashlight">Фонарик</string>
+    <string name="lamp">Настольная лампа</string>
+    <string name="phytolamp">Фитолампа</string>
+    <string name="spotlight">Прожектор</string>
+    <string name="farm_fertilizer">Какое-то удобрение с фермы</string>
+    <string name="growth_fertilizer">Удобрение роста</string>
+    <string name="real_fertilizer">Настоящее удобрение</string>
+    <string name="spray">Пшикалка</string>
+    <string name="candle_desc">Это немного, но это честная работа</string>
+    <string name="oil_lamp_desc">Лучше чем ничего</string>
+    <string name="farm_fertilizer_desc">Лучше чем ничего - избитая фраза</string>
+    <string name="flashlight_desc">С таким охранники ходят</string>
+    <string name="lamp_desc">Приятный теплый свет 😊</string>
+    <string name="led_desc">Профессиональное освещение</string>
+    <string name="phytolamp_desc">Световой спектр лампы не содержит зелёного света, специально для растений</string>
+    <string name="spotlight_desc">Осторожно, горячо!</string>
+    <string name="growth_fertilizer_desc">Оно растёт, ура!</string>
+    <string name="real_fertilizer_desc">Это что, рашн компост?</string>
+    <string name="spray_desc">*Пш-пш* - прикольно</string>
+</resources>

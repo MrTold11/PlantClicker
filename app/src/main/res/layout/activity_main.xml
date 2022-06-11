@@ -60,7 +60,7 @@
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/tulip"/>
+                app:srcCompat="@drawable/cactus"/>
 
         <ImageView
                 android:layout_width="match_parent"
@@ -101,7 +101,7 @@
             android:layout_marginEnd="16dp" android:onClick="onClick" android:layout_marginBottom="16dp"/>
 
     <TextView
-            android:text="+x/sec"
+            android:text="@string/autoclick_value"
             android:layout_width="110dp"
             android:layout_height="26dp"
             android:id="@+id/AutoClick"

@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantclicker.R;
 
 import java.util.Set;
 
 public class ShopRecyclerViewAdapter extends RecyclerView.Adapter<ShopRecyclerViewAdapter.ViewHolder> {
-
-    public final static int COLOR_YELLOW = Color.parseColor("#FBC02D");
 
     public final ShopCategory category;
     private final Set<String> bought;
@@ -40,9 +39,9 @@ public class ShopRecyclerViewAdapter extends RecyclerView.Adapter<ShopRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.nameView.setText(category.items[position].name);
+        holder.nameView.setText(category.items[position].getName(mInflater.getContext()));
         holder.imageView.setImageDrawable(category.items[position].getDrawable(mInflater.getContext()));
-        if (bought.contains(category.items[position].name)) {
+        if (bought.contains(category.items[position].getId())) {
             holder.priceView.setVisibility(View.INVISIBLE);
             holder.coinsView.setVisibility(View.INVISIBLE);
         } else {
@@ -51,7 +50,7 @@ public class ShopRecyclerViewAdapter extends RecyclerView.Adapter<ShopRecyclerVi
             if (category.items[position].price > balance)
                 holder.priceView.setTextColor(Color.RED);
             else
-                holder.priceView.setTextColor(COLOR_YELLOW);
+                holder.priceView.setTextColor(ContextCompat.getColor(mInflater.getContext(), R.color.Yellow));
             holder.boughtView.setVisibility(View.INVISIBLE);
         }
     }

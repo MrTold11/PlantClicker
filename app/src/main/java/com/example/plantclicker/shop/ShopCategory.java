@@ -2,39 +2,48 @@ package com.example.plantclicker.shop;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import com.example.plantclicker.R;
 import com.example.plantclicker.Utils;
 
 public enum ShopCategory {
 
-    LAMPS("Лампы", new ShopItem[] {
-            new ShopItem(20, "Свеча", "Призраков будет видно", "candle"),
-            new ShopItem(50, "Масляная лампа", "Лучше чем ничего", "oil_lamp"),
-            new ShopItem(100, "Фонарик", "С таким охранники ходят", "flashlight"),
-            new ShopItem(500, "Настольная лампа", "Приятный теплый свет 😊", "lamp"),
-            new ShopItem(2000, "LED", "Профессиональое освещение, ярче солнца", "ledlight"),
-            new ShopItem(5000, "Фитолампа", "Световой спектр лампы не содержит зелёного света, специально для растений", "ultraviolet"),
-            new ShopItem(10000, "Прожектор", "Осторожно, горячо!", "spotlight")
-    }, "lightbulb"),
+    LAMPS(R.string.lamps, "lightbulb",
+            new ShopItem(20, 1, "candle"),
+            new ShopItem(50, 2, "oil_lamp"),
+            new ShopItem(100, 5, "flashlight"),
+            new ShopItem(500, 7, "lamp"),
+            new ShopItem(2000, 10, R.string.ledlight, R.string.led_desc, "ledlight"),
+            new ShopItem(5000, 15, "phytolamp"),
+            new ShopItem(10000, 20, "spotlight")
+    ),
 
-    BOOSTERS("Удобрения", new ShopItem[] {
-            new ShopItem(10, "Какое-то удобрение с фермы", "Лучше чем ничего - избитая фраза", "fertilizerleon"),
-            new ShopItem(50, "Удобрение роста", "Оно растет, ура!", "fertilizergrow"),
-            new ShopItem(100, "Настоящее удобренеие", "Это что, рашн кампост?", "fertilizerusual"),
-            new ShopItem(300, "Пшикалка", "Пш, пш, прикольно", "fertilizerpshik"),
-    }, "fertilizer");
+    BOOSTERS(R.string.fertilizers, "fertilizer",
+            new ShopItem(10, 2, "farm_fertilizer"),
+            new ShopItem(50, 5, "growth_fertilizer"),
+            new ShopItem(100, 7, "real_fertilizer"),
+            new ShopItem(300, 10, "spray")
+    );
 
-    public final String name;
+    private final int nameId;
     public final ShopItem[] items;
     final String iconName;
 
-    ShopCategory(String name, ShopItem[] items, String iconName) {
-        this.name = name;
+    ShopCategory(int nameId, String iconName, ShopItem... items) {
+        this.nameId = nameId;
         this.items = items;
         this.iconName = iconName;
     }
 
     public Drawable getDrawable(Context c) {
         return Utils.getDrawable(c, iconName);
+    }
+
+    public String getName(Context c) {
+        return c.getResources().getString(nameId);
+    }
+
+    public String getId() {
+        return iconName;
     }
 
 }

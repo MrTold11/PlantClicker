@@ -1,9 +1,8 @@
 package com.example.plantclicker.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,25 +14,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.plantclicker.R;
-import com.example.plantclicker.Utils;
 import com.example.plantclicker.shop.ShopCategory;
+import com.example.plantclicker.shop.ShopItem;
+import com.example.plantclicker.storage.AssetsManager;
+import com.example.plantclicker.storage.SimpleStorage;
+import com.example.plantclicker.storage.Storage;
 
-import java.util.Collections;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Set;
 
 import static com.example.plantclicker.Utils.parseAndAdd;
 
 public class ClickerActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
-    public static final String APP_PREFERENCES_COINSVALUE = "CoinsValue";
-    public static final String APP_PREFERENCES_PROGRESSVALUE = "progressValue";
-
     ProgressBar progressBar;
     int fingers, auto, clickPower;
 
-    SharedPreferences saveSettings, shopData;
+    Storage storage;
+    AssetsManager assets;
     TextView valueOfCoins, autoClick;
     ImageView plantTop, plantBottom;
     Handler autoClickHandler = new Handler(Looper.getMainLooper());
@@ -57,8 +55,8 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
         valueOfCoins = findViewById(R.id.ValueOfCoins);
         autoClick = findViewById(R.id.AutoClick);
 
-        saveSettings = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
-        shopData = getSharedPreferences("shopData", Context.MODE_PRIVATE);
+        storage = new SimpleStorage(this);
+        assets = new AssetsManager(this, "plants");
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -83,7 +81,7 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
             progressBar.setProgress(progressBar.getProgress() + add);
 
         if (progressBar.getProgress() > progressBar.getMax() - 1) {
-            randomPlant();
+            setPlantDrawable(assets.randomPlant());
             progressBar.setProgress(0);
             updateProgressMaximum();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -98,21 +96,14 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
         progressBar.setMax((int) (20 + Math.pow((auto + clickPower) / 2f, 2.5)));
     }
 
-    final Random random = new Random(System.currentTimeMillis());
-    final String[] plantDrawables = new String[] {
-            "aloevera",
-            //"cactusup",
-            "chamomile",
-            "chrysanthemum",
-            "pineapple",
-            "tulip",
-            "rose"
-    };
-
-    private void randomPlant() {
-        String name = plantDrawables[random.nextInt(plantDrawables.length)];
+    private void setPlantDrawable(String name) {
+        Drawable d = assets.loadPlant(name);
+        if (d == null) {
+            name = assets.randomPlant();
+            d = assets.loadPlant(name);
+        }
         plantTop.setTag(name);
-        plantTop.setImageDrawable(Utils.getDrawable(this, name));
+        plantTop.setImageDrawable(d);
     }
 
     @Override
@@ -126,48 +117,38 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        valueOfCoins.setText(saveSettings.getString(APP_PREFERENCES_COINSVALUE, "0"));
-        progressBar.setProgress(saveSettings.getInt(APP_PREFERENCES_PROGRESSVALUE, 0));
+        valueOfCoins.setText(storage.getCoins());
 
-        Set<String> lamps = shopData.getStringSet(ShopCategory.LAMPS.name, Collections.emptySet());
+        Set<String> lamps = storage.getItems(ShopCategory.LAMPS.getId());
         auto = 0;
-        if (lamps.contains(ShopCategory.LAMPS.items[6].name)) auto += 20;
-        if (lamps.contains(ShopCategory.LAMPS.items[5].name)) auto += 15;
-        if (lamps.contains(ShopCategory.LAMPS.items[4].name)) auto += 10;
-        if (lamps.contains(ShopCategory.LAMPS.items[3].name)) auto += 7;
-        if (lamps.contains(ShopCategory.LAMPS.items[2].name)) auto += 5;
-        if (lamps.contains(ShopCategory.LAMPS.items[1].name)) auto += 2;
-        if (lamps.contains(ShopCategory.LAMPS.items[0].name)) auto += 1;
+        for (ShopItem item : ShopCategory.LAMPS.items)
+            if (lamps.contains(item.getId())) auto += (int) item.value;
 
-        Set<String> boosts = shopData.getStringSet(ShopCategory.BOOSTERS.name, Collections.emptySet());
+        Set<String> boosts = storage.getItems(ShopCategory.BOOSTERS.getId());
         clickPower = 1;
-        if (boosts.contains(ShopCategory.BOOSTERS.items[3].name)) clickPower += 10;
-        if (boosts.contains(ShopCategory.BOOSTERS.items[2].name)) clickPower += 7;
-        if (boosts.contains(ShopCategory.BOOSTERS.items[1].name)) clickPower += 5;
-        if (boosts.contains(ShopCategory.BOOSTERS.items[0].name)) clickPower += 2;
+        for (ShopItem item : ShopCategory.BOOSTERS.items)
+            if (boosts.contains(item.getId())) clickPower += (int) item.value;
 
         updateProgressMaximum();
+        progressBar.setProgress(storage.getProgress());
 
-        autoClick.setText(String.format(Locale.getDefault(), "+%d/sec", auto));
+        autoClick.setText(String.format(Locale.getDefault(), getString(R.string.autoclick_value), auto));
         autoClickHandler.postDelayed(autoClickRunnable, 1000);
 
-        String plant = saveSettings.getString("currentPlant", plantDrawables[0]);
-        plantTop.setTag(plant);
-        plantTop.setImageDrawable(Utils.getDrawable(this, plant));
+        String plant = storage.getPlant(assets.randomPlant());
+        setPlantDrawable(plant);
     }
 
     @Override
     protected void onPause() {
         autoClickHandler.removeCallbacks(autoClickRunnable);
         super.onPause();
-        SharedPreferences.Editor editor = saveSettings.edit();
-        editor.putString(APP_PREFERENCES_COINSVALUE, valueOfCoins.getText().toString());
-        editor.putInt(APP_PREFERENCES_PROGRESSVALUE, progressBar.getProgress());
-        try {
-            String plant = (String) plantTop.getTag();
-            editor.putString("currentPlant", plant);
-        } catch (Exception ignored) {}
 
-        editor.apply();
+        storage.saveCoins(valueOfCoins.getText().toString());
+        storage.saveProgress(progressBar.getProgress());
+        try {
+            storage.savePlant((String) plantTop.getTag());
+        } catch (Exception ignored) {}
+        storage.apply();
     }
 }

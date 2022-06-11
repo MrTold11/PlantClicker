@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">PlantClicker</string>
+    <string name="app_name" translatable="false">PlantClicker</string>
+    <string name="autoclick_value">+%d/sec</string>
+    <string name="lamps">Lamps</string>
+    <string name="fertilizers">Fertilizers</string>
+    <string name="candle">Candle</string>
+    <string name="oil_lamp">Oil lamp</string>
+    <string name="flashlight">Flashlight</string>
+    <string name="lamp">Lamp</string>
+    <string name="ledlight" translatable="false">LED</string>
+    <string name="phytolamp">Phytolamp</string>
+    <string name="spotlight">Spotlight</string>
+    <string name="farm_fertilizer">Some fertilizer from the farm</string>
+    <string name="growth_fertilizer">Growth fertilizer</string>
+    <string name="real_fertilizer">Real fertilizer</string>
+    <string name="spray">Pshikalka</string>
+    <string name="candle_desc">It ain\'t much, but it\'s honest work</string>
+    <string name="oil_lamp_desc">Better than nothing</string>
+    <string name="flashlight_desc">With such flashlights the guards go</string>
+    <string name="lamp_desc">Nice warm light 😊</string>
+    <string name="led_desc">Professional lighting</string>
+    <string name="phytolamp_desc">The light spectrum of the lamp does not contain green light, especially for plants</string>
+    <string name="spotlight_desc">Be careful it\'s hot!</string>
+    <string name="farm_fertilizer_desc">Better than nothing - hackneyed phrase</string>
+    <string name="growth_fertilizer_desc">It\'s growing, yay</string>
+    <string name="real_fertilizer_desc">What is this, Russian compost?</string>
+    <string name="spray_desc">*Psh-psh* - nice</string>
 </resources>

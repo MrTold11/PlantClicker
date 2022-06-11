@@ -1,7 +1,6 @@
 package com.example.plantclicker.activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,6 +8,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantclicker.R;
@@ -16,18 +16,17 @@ import com.example.plantclicker.Utils;
 import com.example.plantclicker.shop.ShopCategory;
 import com.example.plantclicker.shop.ShopItem;
 import com.example.plantclicker.shop.ShopRecyclerViewAdapter;
+import com.example.plantclicker.storage.SimpleStorage;
+import com.example.plantclicker.storage.Storage;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.plantclicker.Utils.parseAndAdd;
-import static com.example.plantclicker.activity.ClickerActivity.APP_PREFERENCES_COINSVALUE;
-import static com.example.plantclicker.shop.ShopRecyclerViewAdapter.COLOR_YELLOW;
 
 public class ShopActivity extends AppCompatActivity implements View.OnClickListener, ShopRecyclerViewAdapter.ItemClickListener {
 
-    SharedPreferences shopData, saveSettings;
+    Storage storage;
     RecyclerView recyclerView;
     ShopRecyclerViewAdapter adapter;
     TextView valueOfCoins, categoryName;
@@ -36,11 +35,10 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
-        shopData = getSharedPreferences("shopData", Context.MODE_PRIVATE);
-        saveSettings = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+        storage = new SimpleStorage(this);
 
         valueOfCoins = findViewById(R.id.shopCoins);
-        valueOfCoins.setText(saveSettings.getString(APP_PREFERENCES_COINSVALUE, "0"));
+        valueOfCoins.setText(storage.getCoins());
         categoryName = findViewById(R.id.categoryName);
         LinearLayout categoryLayout = findViewById(R.id.categoryLayout);
 
@@ -80,11 +78,11 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.item_popup_layout, (ViewGroup) view, false);
 
-        if (((TextView) view.findViewById(R.id.itemPrice)).getCurrentTextColor() != COLOR_YELLOW)
+        if (((TextView) view.findViewById(R.id.itemPrice)).getCurrentTextColor() != ContextCompat.getColor(this, R.color.Yellow))
             popupView.findViewById(R.id.buyButton).setEnabled(false);
         ShopItem item = adapter.category.items[position];
-        ((TextView) popupView.findViewById(R.id.nameView)).setText(item.name);
-        ((TextView) popupView.findViewById(R.id.descriptionView)).setText(item.description);
+        ((TextView) popupView.findViewById(R.id.nameView)).setText(item.getName(this));
+        ((TextView) popupView.findViewById(R.id.descriptionView)).setText(item.getDescription(this));
         ((TextView) popupView.findViewById(R.id.costView)).setText(String.valueOf(item.price));
         ((ImageView) popupView.findViewById(R.id.imageView)).setImageDrawable(item.getDrawable(this));
 
@@ -116,28 +114,23 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void openCategory(ShopCategory category) {
-        categoryName.setText(category.name);
+        categoryName.setText(category.getName(this));
         adapter = new ShopRecyclerViewAdapter(this, category,
-                shopData.getStringSet(category.name, Collections.emptySet()),
+                storage.getItems(category.getId()),
                 Utils.safeParse(valueOfCoins.getText().toString(), 0));
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
     private void buyItem(ShopCategory category, ShopItem item) {
-        Set<String> set = new HashSet<>(shopData.getStringSet(category.name, Collections.emptySet()));
-        set.add(item.name);
-        //todo enable?
+        Set<String> set = new HashSet<>(storage.getItems(category.getId()));
+        set.add(item.getId());
 
-        SharedPreferences.Editor editor = shopData.edit();
-        editor.putStringSet(category.name, set);
-        editor.apply();
+        storage.saveItems(category.getId(), set);
+        storage.saveCoins(parseAndAdd(valueOfCoins.getText().toString(), -1*item.price, 0));
+        storage.apply();
 
-        editor = saveSettings.edit();
-        editor.putString(APP_PREFERENCES_COINSVALUE, parseAndAdd(valueOfCoins.getText().toString(), -1*item.price, 0));
-        editor.apply();
-
-        valueOfCoins.setText(saveSettings.getString(APP_PREFERENCES_COINSVALUE, "0"));
+        valueOfCoins.setText(storage.getCoins());
         openCategory(category);
     }
 

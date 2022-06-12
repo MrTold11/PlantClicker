@@ -62,6 +62,7 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
 
         storage = new SimpleStorage(this);
         assets = new AssetsManager(this, "plants");
+        plantTop.startAnimation(AnimationUtils.loadAnimation(this, R.anim.plant_rotate));
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -124,7 +125,7 @@ public class ClickerActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updateProgressMaximum() {
-        progressBar.setMax((int) (20 + Math.pow((auto + clickPower) / 2f, 2.5)));
+        progressBar.setMax((int) (40 + Math.pow((auto + clickPower) / 2f, 2)));
     }
 
     private void setPlantDrawable(String name) {

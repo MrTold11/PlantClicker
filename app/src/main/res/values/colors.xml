@@ -25,5 +25,7 @@
     <color name="GreenBright">#33FF3D</color>
     <color name="PopupBg1">#DD1976D2</color>
     <color name="PopupBg2">#EE1976D2</color>
+    <color name="light_blue">#26C6DA</color>
+    <color name="blue">#2196F3</color>
 
 </resources>
